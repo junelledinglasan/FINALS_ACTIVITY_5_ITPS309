@@ -1,12 +1,193 @@
 {% extends 'base.html' %}
-{% block title %} Student Grades {% endblock %}
+{% block title %} Student Grades List {% endblock %}
 
 {% block content %}
-    <h2>Grades:</h2>
-    <ul>
+<style>
+    /* General Layout */
+    body {
+        background-color: #f0f2f5; /* Light background */
+    }
+
+    .grades-container {
+        max-width: 900px; /* Slightly wider container */
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 15px; /* Softer rounded corners */
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h2 {
+        color: #007bff;
+        font-size: 28px;
+        font-weight: 600;
+        border-bottom: 3px solid #e0e0e0;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+    }
+
+    /* List Styling (The Grid/Table structure) */
+    .grades-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .grades-list li {
+        display: grid; /* Use CSS Grid for powerful column alignment */
+        grid-template-columns: 50px 1.5fr 2fr 100px 1fr 120px; /* Define column widths */
+        gap: 15px;
+        align-items: center;
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        border-left: 5px solid #28a745; 
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        transition: background-color 0.2s;
+    }
+    
+    .grades-list li:hover {
+        background-color: #e9ecef;
+    }
+    
+    /* Header for the List (optional, for better table visualization) */
+    .list-header {
+        display: grid;
+        grid-template-columns: 50px 1.5fr 2fr 100px 1fr 120px;
+        gap: 15px;
+        padding: 10px 20px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #495057;
+        border-bottom: 2px solid #ced4da;
+    }
+    
+    /* Grade Details Styling */
+    .grade-item span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #343a40;
+    }
+    
+    .grade-score {
+        font-weight: bold;
+        color: #007bff; /* Blue for the actual grade */
+    }
+
+    .grade-remark {
+        font-style: italic;
+        color: #dc3545; /* Red for important remarks */
+    }
+
+
+    /* Actions Column Styles */
+    .item-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        align-items: center;
+        padding-left: 10px;
+    }
+    
+    .item-actions a {
+        padding: 8px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.9em;
+        font-weight: 600;
+        transition: background-color 0.2s;
+        white-space: nowrap;
+    }
+
+    .edit-link {
+        background-color: #ffc107; /* Yellowish for Edit */
+        color: #212529;
+    }
+    .edit-link:hover {
+        background-color: #e0a800;
+    }
+    
+    /* Added Delete Link Styling */
+    .delete-link {
+        background-color: #dc3545; /* Red for Delete */
+        color: white;
+    }
+    .delete-link:hover {
+        background-color: #c82333;
+    }
+    
+    /* Button Group (Bottom buttons) */
+    .button-group {
+        margin-top: 30px;
+        display: flex;
+        gap: 15px;
+        justify-content: flex-start;
+    }
+
+    .action-button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.1s;
+    }
+
+    .action-button a {
+        text-decoration: none;
+        color: white;
+    }
+    .add-button { background-color: #28a745; }
+    .add-button:hover { background-color: #218838; transform: translateY(-1px); }
+    .back-button { background-color: #6c757d; }
+    .back-button a { color: white; } /* Ensure text color is right for back button */
+    .back-button:hover { background-color: #5a6268; transform: translateY(-1px); }
+</style>
+
+<div class="grades-container">
+    <h2>Academic Grades List</h2>
+    
+    <div class="list-header">
+        <span>ID</span>
+        <span>Student</span>
+        <span>Course Taken</span>
+        <span>Grade</span>
+        <span>Remark</span>
+        <span>Actions</span>
+    </div>
+    
+    <ul class="grades-list">
         {% for grade in grades %}
-            <li>{{grade.Grade_id}} - {{grade.student_name}} - {{grade.course_taken}} - {{grade.grade}} - {{grade.remark}}
+            <li>
+                <span>{{grade.Grade_id}}</span>
+                <span>{{grade.student_name}}</span>
+                <span>{{grade.course_taken}}</span>
+                <span class="grade-score">{{grade.grade}}</span>
+                <span class="grade-remark">{{grade.remark}}</span>
+                
+                <span class="item-actions">
+                    <a href="{% url 'edit_grades' pk=grade.pk %}" class="edit-link">Edit</a>
+
+                </span>
             </li>
+        {% empty %}
+            <p style="text-align: center; color: #6c757d; padding: 20px;">No grades found for this student.</p>
         {% endfor %}
     </ul>
+
+    <div class="button-group">
+        <button class="action-button add-button">
+            <a href="{% url 'add_grades' %}">➕ Add New Grades</a>
+        </button>
+        <button class="action-button back-button">
+            <a href="{% url 'student_profile' %}">Back to Profile</a>
+        </button>
+        
+    </div>
+</div>
+
 {% endblock %}
