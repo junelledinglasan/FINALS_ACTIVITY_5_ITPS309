@@ -1,144 +1,193 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Login</title>
+{% extends 'base.html' %}
+{% block title %} Student Grades List {% endblock %}
+
+{% block content %}
+<style>
+    /* General Layout */
+    body {
+        background-color: #f0f2f5; /* Light background */
+    }
+
+    .grades-container {
+        max-width: 900px; /* Slightly wider container */
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 15px; /* Softer rounded corners */
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h2 {
+        color: #007bff;
+        font-size: 28px;
+        font-weight: 600;
+        border-bottom: 3px solid #e0e0e0;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+    }
+
+    /* List Styling (The Grid/Table structure) */
+    .grades-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .grades-list li {
+        display: grid; /* Use CSS Grid for powerful column alignment */
+        grid-template-columns: 50px 1.5fr 2fr 100px 1fr 120px; /* Define column widths */
+        gap: 15px;
+        align-items: center;
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        border-left: 5px solid #28a745; 
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        transition: background-color 0.2s;
+    }
     
-    <style>
-        /* Palettes: #007bff (Primary Blue - Login Accent), #f8f9fa (Light Background) */
+    .grades-list li:hover {
+        background-color: #e9ecef;
+    }
+    
+    /* Header for the List (optional, for better table visualization) */
+    .list-header {
+        display: grid;
+        grid-template-columns: 50px 1.5fr 2fr 100px 1fr 120px;
+        gap: 15px;
+        padding: 10px 20px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #495057;
+        border-bottom: 2px solid #ced4da;
+    }
+    
+    /* Grade Details Styling */
+    .grade-item span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #343a40;
+    }
+    
+    .grade-score {
+        font-weight: bold;
+        color: #007bff; /* Blue for the actual grade */
+    }
 
-        /* 1. General Body and Layout */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5; /* Modern, clean background */
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: #333;
-        }
+    .grade-remark {
+        font-style: italic;
+        color: #dc3545; /* Red for important remarks */
+    }
 
-        /* 2. Container (The Card) */
-        .login-container {
-            max-width: 400px;
-            width: 90%; /* Responsive width */
-            padding: 35px 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Deeper shadow for a floating effect */
-            background-color: #ffffff;
-            text-align: center;
-        }
 
-        .login-container h2 {
-            color: #007bff; /* Primary Blue accent for login */
-            margin-bottom: 25px;
-            font-size: 26px;
-            font-weight: 600;
-            border-bottom: 3px solid #e0e0e0; 
-            display: inline-block;
-            padding-bottom: 8px;
-        }
+    /* Actions Column Styles */
+    .item-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        align-items: center;
+        padding-left: 10px;
+    }
+    
+    .item-actions a {
+        padding: 8px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.9em;
+        font-weight: 600;
+        transition: background-color 0.2s;
+        white-space: nowrap;
+    }
 
-        /* 3. Styling the Form Fields ({{ form.as_p }}) */
-        .login-form p {
-            margin-bottom: 18px;
-            text-align: left;
-        }
+    .edit-link {
+        background-color: #ffc107; /* Yellowish for Edit */
+        color: #212529;
+    }
+    .edit-link:hover {
+        background-color: #e0a800;
+    }
+    
+    /* Added Delete Link Styling */
+    .delete-link {
+        background-color: #dc3545; /* Red for Delete */
+        color: white;
+    }
+    .delete-link:hover {
+        background-color: #c82333;
+    }
+    
+    /* Button Group (Bottom buttons) */
+    .button-group {
+        margin-top: 30px;
+        display: flex;
+        gap: 15px;
+        justify-content: flex-start;
+    }
 
-        .login-form label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 6px;
-            color: #495057; 
-            font-size: 15px;
-        }
+    .action-button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.1s;
+    }
 
-        .login-form input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ced4da; 
-            border-radius: 6px; 
-            box-sizing: border-box; 
-            font-size: 16px;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
+    .action-button a {
+        text-decoration: none;
+        color: white;
+    }
+    .add-button { background-color: #28a745; }
+    .add-button:hover { background-color: #218838; transform: translateY(-1px); }
+    .back-button { background-color: #6c757d; }
+    .back-button a { color: white; } /* Ensure text color is right for back button */
+    .back-button:hover { background-color: #5a6268; transform: translateY(-1px); }
+</style>
 
-        .login-form input:focus {
-            border-color: #007bff; 
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Subtle glowing effect */
-            outline: none;
-        }
-
-        /* 4. Styling the Button */
-        .login-button {
-            width: 100%;
-            padding: 14px;
-            background-color: #007bff; /* Primary Blue */
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 25px;
-            letter-spacing: 0.5px;
-            transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
-        }
-
-        .login-button:hover {
-            background-color: #0056b3; 
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
-        }
-
-        .login-button:active {
-            transform: translateY(1px);
-        }
-        
-        /* Ensure link inside button covers the entire button */
-        .login-button a {
-            color: inherit;
-            text-decoration: none;
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* 5. Register Link */
-        .register-link-text {
-            margin-top: 25px;
-            font-size: 14px;
-            color: #6c757d;
-        }
-
-        .register-link-text a {
-            color: #28a745; /* Green accent for registration link */
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
-
-        .register-link-text a:hover {
-            color: #218838;
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <div class="login-container">
-        <h2>Student Login</h2>
-
-        <form method="POST" class="login-form">
-            {% csrf_token %}
-            
-            {{ form.as_p }} 
-
-            <button type="submit" class="login-button">LOG IN</button>
-        </form>
-
-        <p class="register-link-text">Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+<div class="grades-container">
+    <h2>Academic Grades List</h2>
+    
+    <div class="list-header">
+        <span>ID</span>
+        <span>Student</span>
+        <span>Course Taken</span>
+        <span>Grade</span>
+        <span>Remark</span>
+        <span>Actions</span>
     </div>
-</body>
-</html>
+    
+    <ul class="grades-list">
+        {% for grade in grades %}
+            <li>
+                <span>{{grade.Grade_id}}</span>
+                <span>{{grade.student_name}}</span>
+                <span>{{grade.course_taken}}</span>
+                <span class="grade-score">{{grade.grade}}</span>
+                <span class="grade-remark">{{grade.remark}}</span>
+                
+                <span class="item-actions">
+                    <a href="{% url 'edit_grades' pk=grade.pk %}" class="edit-link">Edit</a>
+
+                </span>
+            </li>
+        {% empty %}
+            <p style="text-align: center; color: #6c757d; padding: 20px;">No grades found for this student.</p>
+        {% endfor %}
+    </ul>
+
+    <div class="button-group">
+        <button class="action-button add-button">
+            <a href="{% url 'add_grades' %}">➕ Add New Grades</a>
+        </button>
+        <button class="action-button back-button">
+            <a href="{% url 'student_profile' %}">Back to Profile</a>
+        </button>
+        
+    </div>
+</div>
+
+{% endblock %}
