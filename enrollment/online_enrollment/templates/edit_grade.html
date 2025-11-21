@@ -1,16 +1,143 @@
-<h2>Edit Grade Form</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save Changes</button>
-</form>
+{% extends 'base.html' %}
+{% block title %} Edit Grade {% endblock %}
 
-{% for grade in grades %}
-<tr>
-    <td>
-        <a href="{% url 'edit_grades' pk=grade.pk %}">
-            <button>Edit</button>
-        </a>
-    </td>
-</tr>
-{% endfor %}
+{% block content %}
+<style>
+    /* Global Body Background */
+    body {
+        background-color: #f0f2f5; /* Consistent light background */
+    }
+    
+    /* 1. Container and Header */
+    .form-container {
+        max-width: 650px; /* Slightly wider for better form layout */
+        margin: 50px auto;
+        padding: 40px;
+        background-color: #ffffff;
+        border-radius: 15px; /* Softer radius */
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); /* Deeper shadow */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Consistent font */
+    }
+
+    h2 {
+        color: #007bff;
+        font-size: 30px; /* Slightly larger */
+        font-weight: 600;
+        border-bottom: 3px solid #e0e0e0;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    /* 2. Form Styling (Django form.as_p renders fields inside <p> tags) */
+    .edit-form p {
+        margin-bottom: 20px; /* More spacing between fields */
+    }
+    
+    .edit-form label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: bold;
+        color: #343a40; /* Darker text */
+        font-size: 1em;
+    }
+    
+    /* Style for error lists (if any) */
+    .errorlist {
+        color: #dc3545;
+        list-style: none;
+        padding-left: 0;
+        font-size: 0.9em;
+        margin-top: -10px;
+        margin-bottom: 5px;
+    }
+
+
+    .edit-form input[type="text"],
+    .edit-form input[type="number"],
+    .edit-form textarea,
+    .edit-form select {
+        width: 100%;
+        padding: 14px; /* More padding */
+        border: 1px solid #ced4da;
+        border-radius: 10px; /* More rounded corners */
+        box-sizing: border-box; 
+        font-size: 1em;
+        background-color: #fcfcfc;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .edit-form input:focus,
+    .edit-form textarea:focus,
+    .edit-form select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.2); 
+        outline: none;
+    }
+    
+    .edit-form textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    /* 3. Button Group */
+    .button-group {
+        margin-top: 40px; 
+        display: flex;
+        justify-content: flex-end; /* Align buttons to the right */
+        gap: 15px;
+    }
+
+    .action-button {
+        flex-grow: 0;
+        min-width: 150px;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 10px; 
+        font-size: 1.05em;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.1s, box-shadow 0.2s;
+        text-align: center;
+        text-decoration: none; 
+        font-weight: 600; 
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        display: inline-block; /* Ensure <a> tag acts like button */
+    }
+
+    /* Specific Button Colors */
+    .save-button {
+        background-color: #007bff; /* Primary Blue */
+        color: white;
+    }
+    .save-button:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    }
+    
+    .back-button {
+        background-color: #6c757d; /* Gray */
+        color: white;
+    }
+    .back-button:hover {
+        background-color: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    }
+</style>
+
+<div class="form-container">
+    <h2><span style="color: #28a745;">Edit</span> Grade Details ✏️</h2>
+    
+    <form method="POST" class="edit-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <div class="button-group">
+            <a href="{% url 'grades_list' %}" class="action-button back-button">Back to List</a>
+            <button type="submit" class="action-button save-button">💾 Update Grade</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
