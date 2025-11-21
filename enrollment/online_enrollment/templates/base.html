@@ -3,7 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %}</title>
+    <title>Enrollment System | {% block title %}{% endblock %}</title>
+    
+    <style>
+        /* Global Reset and Typography */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6; /* Light background */
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #007bff; /* Primary blue color */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            letter-spacing: 1.5px;
+        }
+
+        /* Main Content Area */
+        main {
+            flex-grow: 1; /* Ensures the main content takes up all available space */
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            /* Flex center alignment para sa mga forms (Login/Register) */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Ensures the container classes (like .login-container) are centered by main */
+        .login-container, .register-container, .profile-container, .grades-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+
+        /* Footer Styling */
+        footer {
+            background-color: #343a40; /* Darker color for contrast */
+            color: #ccc;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.9em;
+            width: 100%;
+        }
+        
+        /* Link styles (general link appearance) */
+        a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        
+        /* Utility styles for buttons (reusable styles if needed outside specific forms) */
+        button a {
+            color: white !important; /* Forces link text inside buttons to be white */
+            text-decoration: none !important;
+        }
+        
+        
+        /* Optional: Style for Django messages/errors */
+        .messages {
+            list-style: none;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: #ffeeba;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+    </style>
 </head>
 <body>
     <header>
@@ -14,8 +103,10 @@
         {% block content %}{% endblock %}
     </main>
 
+
     <footer>
-        <p>Enrollment &copy; 2025</p>
+        <p>JUNELLE C. DINGLASAN</p>
+        <p>Enrollment System &copy; 2025</p>
     </footer>
 
 </body>
