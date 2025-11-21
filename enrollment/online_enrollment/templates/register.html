@@ -1,11 +1,135 @@
-<h2>Create New Account</h2>
-
-<form method="POST">
-    {% csrf_token %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Account</title>
     
-    {{ form.as_p }} 
-    
-    <button type="submit">Register</button>
-</form>
+    <style>
+        /* Palettes: #007bff (Primary Blue), #28a745 (Success Green/Registration Accent), #f8f9fa (Light Background) */
+        
+        /* 1. General Body and Layout */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa; /* Very light background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
 
-<p>Already have an account? <a href="{% url 'user_login' %}">Login here</a></p>
+        /* 2. Container (The Card) */
+        .register-container {
+            max-width: 400px;
+            width: 90%; /* Responsive width */
+            padding: 35px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Deeper shadow for a floating effect */
+            background-color: #ffffff;
+            text-align: center;
+        }
+
+        .register-container h2 {
+            color: #28a745; /* Green accent for registration */
+            margin-bottom: 25px;
+            font-size: 26px;
+            font-weight: 600;
+            border-bottom: 3px solid #e0e0e0; 
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        /* 3. Styling the Form Fields ({{ form.as_p }}) */
+        .register-form p {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .register-form label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #495057; /* Darker gray for labels */
+            font-size: 15px;
+        }
+
+        .register-form input {
+            width: 100%;
+            padding: 12px; /* Increased padding */
+            border: 1px solid #ced4da; /* Subtle border */
+            border-radius: 6px; /* Slightly rounded corners */
+            box-sizing: border-box; 
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .register-form input:focus {
+            border-color: #28aa4680; /* Light green border on focus */
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25); /* Subtle glowing effect */
+            outline: none;
+        }
+
+        /* 4. Styling the Button */
+        .register-button {
+            width: 100%;
+            padding: 14px;
+            background-color: #28a745; /* Success Green */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 25px;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
+        }
+
+        .register-button:hover {
+            background-color: #218838; 
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+        }
+
+        .register-button:active {
+            transform: translateY(1px);
+        }
+
+        /* 5. Login Link */
+        .login-link-text {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .login-link-text a {
+            color: #007bff; /* Primary Blue for link */
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .login-link-text a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2>Create New Account</h2>
+
+        <form method="POST" class="register-form">
+            {% csrf_token %}
+            
+            {{ form.as_p }} 
+            
+            <button type="submit" class="register-button">Register Account</button>
+        </form>
+
+        <p class="login-link-text">Already have an account? <a href="{% url 'user_login' %}">Login here</a></p>
+    </div>
+</body>
+</html>
