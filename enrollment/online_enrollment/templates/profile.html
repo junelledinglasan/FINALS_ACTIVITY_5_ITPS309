@@ -1,0 +1,38 @@
+<h2>Student Profile Information</h2>
+
+<p>Welcome, {{ user.first_name }}!</p>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Field</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Username:</td>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <td>First Name:</td>
+            <td>{{ user.first_name }}</td>
+        </tr>
+        <tr>
+            <td>Last Name:</td>
+            <td>{{ user.last_name }}</td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <td>Account Created On:</td>
+            <td>{{ user.date_joined }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+<p><a href="{% url 'user_logout' %}">Click here to Logout</a></p>
+<p><a href="{% url 'add_course' %}">Back to Add Course Form</a></p>

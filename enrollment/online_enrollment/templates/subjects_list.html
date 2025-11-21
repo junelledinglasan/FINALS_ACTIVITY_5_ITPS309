@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %} Student Subject{% endblock %}
+
+
+{% block content %}
+    <h2>Subject:</h2>
+    <ul>
+        {% for subject in subjects %}
+            <li>{{subject.no_of_units}} - {{subject.department}} - {{subject.sub_title}} - {{subject.sub_code}} - {{subject.time}}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

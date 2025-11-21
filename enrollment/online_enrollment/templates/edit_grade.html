@@ -1,0 +1,16 @@
+<h2>Edit Grade Form</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Changes</button>
+</form>
+
+{% for grade in grades %}
+<tr>
+    <td>
+        <a href="{% url 'edit_grades' pk=grade.pk %}">
+            <button>Edit</button>
+        </a>
+    </td>
+</tr>
+{% endfor %}

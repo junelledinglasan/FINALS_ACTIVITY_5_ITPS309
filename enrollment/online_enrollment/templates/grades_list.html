@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %} Student Grades {% endblock %}
+
+{% block content %}
+    <h2>Grades:</h2>
+    <ul>
+        {% for grade in grades %}
+            <li>{{grade.Grade_id}} - {{grade.student_name}} - {{grade.course_taken}} - {{grade.grade}} - {{grade.remark}}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
