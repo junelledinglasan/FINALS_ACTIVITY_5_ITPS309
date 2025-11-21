@@ -1,38 +1,218 @@
-<h2>Student Profile Information</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    
+    <style>
+        /* General Layout */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern Font */
+            background-color: #f0f2f5; 
+            margin: 0;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        /* Main Container (The Profile Card) */
+        .profile-container {
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); 
+        }
 
-<p>Welcome, {{ user.first_name }}!</p>
+        /* Header and Title */
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #007bff; /* Primary Blue Accent */
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>Field</th>
-            <th>Details</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Username:</td>
-            <td>{{ user.username }}</td>
-        </tr>
-        <tr>
-            <td>First Name:</td>
-            <td>{{ user.first_name }}</td>
-        </tr>
-        <tr>
-            <td>Last Name:</td>
-            <td>{{ user.last_name }}</td>
-        </tr>
-        <tr>
-            <td>Email:</td>
-            <td>{{ user.email }}</td>
-        </tr>
-        <tr>
-            <td>Account Created On:</td>
-            <td>{{ user.date_joined }}</td>
-        </tr>
-    </tbody>
-</table>
+        .header-section h2 {
+            color: #007bff; 
+            font-size: 28px;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .welcome-message {
+            font-size: 1.15em;
+            color: #555;
+            margin-bottom: 30px;
+            padding: 10px;
+            border-left: 5px solid #007bff;
+            background-color: #e9f5ff; /* Light blue background for emphasis */
+            border-radius: 5px;
+        }
 
-<br>
-<p><a href="{% url 'user_logout' %}">Click here to Logout</a></p>
-<p><a href="{% url 'add_course' %}">Back to Add Course Form</a></p>
+        /* Details Card Wrapper */
+        .details-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #e9ecef;
+        }
+
+        .details-card h3 {
+            color: #495057;
+            border-bottom: 2px solid #ced4da;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        /* Profile Details Table Styling */
+        .profile-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .profile-table td {
+            padding: 12px 0;
+            text-align: left;
+            font-size: 1em;
+            border-bottom: 1px dashed #e0e0e0; 
+        }
+        
+        .profile-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .profile-table td:first-child {
+            font-weight: bold;
+            color: #343a40;
+            width: 35%; 
+        }
+
+        /* Navigation Button Group */
+        .button-group {
+            display: grid;
+            /* Adaptive layout: 2 columns on medium/large screens */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-button {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.05em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            /* Ensure anchor link text inherits white color */
+            color: white; 
+        }
+
+        .action-button a {
+            text-decoration: none;
+            color: inherit; /* Inherit white color from button */
+            font-weight: 600;
+            display: block; 
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Specific Button Colors */
+        .logout-button {
+            background-color: #dc3545; /* Red */
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+        
+        .add-button {
+            background-color: #28a745; /* Green */
+        }
+        .add-button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        
+        .list-button {
+            background-color: #007bff; /* Blue */
+        }
+        .list-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        
+        <div class="header-section">
+            <h2>Student Dashboard</h2>
+            <button class="action-button logout-button" style="width: auto; padding: 10px 15px; box-shadow: none;">
+                <a href="{% url 'user_login' %}">Logout</a>
+            </button>
+        </div>
+
+        <p class="welcome-message">Welcome, **{{ user.first_name|default:user.username|title }}!**</p>
+        
+        <div class="details-card">
+            <h3>Account Details</h3>
+            <table class="profile-table">
+                <tbody>
+                    <tr>
+                        <td>Username:</td>
+                        <td>{{ user.username }}</td>
+                    </tr>
+                    <tr>
+                        <td>First Name:</td>
+                        <td>{{ user.first_name|default:"Not Set" }}</td>
+                    </tr>
+                    <tr>
+                        <td>Last Name:</td>
+                        <td>{{ user.last_name|default:"Not Set" }}</td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Account Created On:</td>
+                        <td>{{ user.date_joined|date:"F d, Y P" }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Quick Access</h3>
+
+        <div class="button-group">
+            
+            <button class="action-button add-button">
+                <a href="{% url 'add_course' %}">Add Course Record</a>
+            </button>
+            <button class="action-button add-button">
+                <a href="{% url 'add_grades' %}">Add Grades Record</a>
+            </button>
+            
+            <button class="action-button list-button">
+                <a href="{% url 'courses_list' %}">View Courses List</a>
+            </button>
+            <button class="action-button list-button">
+                <a href="{% url 'grades_list' %}">View Grades List</a>
+            </button>
+
+            </div>
+    </div>
+</body>
+</html>
