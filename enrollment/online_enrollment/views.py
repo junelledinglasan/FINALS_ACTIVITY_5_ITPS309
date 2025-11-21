@@ -68,6 +68,7 @@ def add_course(request):
     courses = Course.objects.all()
     return render(request, 'add_course.html', {'form':form, 'courses': courses}) 
 
+# --- COURSE EDIT FUNCTION ---
 @login_required
 def edit_course(request, pk):
     course = get_object_or_404(Course, pk=pk)
@@ -91,7 +92,7 @@ def add_grades(request):
     grades = Grades.objects.all()
     return render(request, 'add_grade.html', {'form': form, 'grades': grades})
 
-    
+# --- GRADES EDIT FUNCTION ---
 @login_required
 def edit_grades(request, pk):
     grade = get_object_or_404(Grades, pk=pk)
